@@ -1,1 +1,1 @@
-primeiro-projeto-node
+Projeto desenvolvido no Bootcamp da Rocketseat.
