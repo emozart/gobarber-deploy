@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import { verify } from 'jsonwebtoken'
 
 import authConfig from '../config/auth'
+import AppError from '../errors/AppError'
 
 interface TokenPayoad {
   iat: number
@@ -17,7 +18,7 @@ export default function ensureAuthenticated(
   const authHeader = request.headers.authorization
 
   if (!authHeader) {
-    throw new Error('There is no valid token.')
+    throw new AppError('There is no valid token.', 401)
   }
 
   const [, token] = authHeader.split(' ')
@@ -32,6 +33,6 @@ export default function ensureAuthenticated(
 
     return next()
   } catch (err) {
-    throw new Error('Invalid JWT Token')
+    throw new AppError('Invalid JWT Token', 401)
   }
 }
