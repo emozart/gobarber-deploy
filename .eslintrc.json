@@ -25,18 +25,31 @@
   "rules": {
     "prettier/prettier": "error",
     "@typescript-eslint/camelcase": "off",
-    "@typescript-eslint/no-unused-vars": ["error", {
-      "argsIgnorePattern": "_"
-    }],
-    "@typescript-eslint/member-delimiter-style": ["error", {
-      "multiline": {
-        "delimiter": "none",    // 'none' or 'semi' or 'comma'
-        "requireLast": true
-      },
-      "singleline": {
-        "delimiter": "semi",    // 'semi' or 'comma'
-        "requireLast": false
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "_"
       }
-    }]
+    ],
+    "@typescript-eslint/interface-name-prefix": [
+      "error",
+      {
+        "prefixWithI": "always"
+      }
+    ],
+    "@typescript-eslint/member-delimiter-style": [
+      "error",
+      {
+        "multiline": {
+          "delimiter": "none", // 'none' or 'semi' or 'comma'
+          "requireLast": true
+        },
+        "singleline": {
+          "delimiter": "semi", // 'semi' or 'comma'
+          "requireLast": false
+        }
+      }
+    ]
   }
 }
