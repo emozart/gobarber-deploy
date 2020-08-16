@@ -1,10 +1,11 @@
 import { getRepository } from 'typeorm'
-import { hash } from 'bcryptjs'
 import { injectable, inject } from 'tsyringe'
 
 import User from '@modules/users/infra/typeorm/entities/User'
 import AppError from '@shared/errors/AppError'
 import IUserRepository from '@modules/users/Repositories/IUsersRepository'
+
+import IHashProvider from '@modules/users/providers/HashProviders/models/IHashProvider'
 
 interface ICreateUserRequest {
   name: string
@@ -16,17 +17,20 @@ interface ICreateUserRequest {
 class CreateUserService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUserRepository
+    private usersRepository: IUserRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider
   ) { }
 
-  async axecute({ name, email, password }: ICreateUserRequest): Promise<User> {
+  async execute({ name, email, password }: ICreateUserRequest): Promise<User> {
     const checkUserExists = await this.usersRepository.findByEmail(email)
 
     if (checkUserExists) {
-      throw new Error('This email is already in use.')
+      throw new AppError('This email is already in use.')
     }
 
-    const hashedPassword = await hash(password, 8)
+    const hashedPassword = await this.hashProvider.genereteHash(password)
 
     const user = await this.usersRepository.create({
       name,
