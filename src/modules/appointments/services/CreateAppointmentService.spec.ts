@@ -2,15 +2,16 @@ import FakeCreateAppointmentsRepository from '../Repositories/fakes/FakeAppointm
 import CreateAppointmentService from './CreateAppointmentService'
 import AppError from '@shared/errors/AppError'
 
-import Appointment from '../infra/typeorm/entities/Appointment'
+let fakeAppointmentsRepository: FakeCreateAppointmentsRepository
+let createAppointment: CreateAppointmentService
 
 describe('CreateAppointmentService', () => {
-  it('should be able to create a new appointment', async () => {
-    const fakeAppointmentsRepository = new FakeCreateAppointmentsRepository()
-    const createAppointment = new CreateAppointmentService(
-      fakeAppointmentsRepository
-    )
+  beforeEach(() => {
+    fakeAppointmentsRepository = new FakeCreateAppointmentsRepository()
+    createAppointment = new CreateAppointmentService(fakeAppointmentsRepository)
+  })
 
+  it('should be able to create a new appointment', async () => {
     const appointment = await createAppointment.execute({
       date: new Date(),
       provider_id: '123'
@@ -21,11 +22,6 @@ describe('CreateAppointmentService', () => {
   })
 
   it('should not be able to create two appointments on the same time', async () => {
-    const fakeAppointmentsRepository = new FakeCreateAppointmentsRepository()
-    const createAppointment = new CreateAppointmentService(
-      fakeAppointmentsRepository
-    )
-
     const appoitmentDate = new Date()
 
     await createAppointment.execute({
