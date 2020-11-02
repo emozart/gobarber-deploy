@@ -6,6 +6,7 @@ import AppError from '@shared/errors/AppError'
 import IUserRepository from '@modules/users/Repositories/IUsersRepository'
 
 import IHashProvider from '@modules/users/providers/HashProviders/models/IHashProvider'
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider'
 
 interface ICreateUserRequest {
   name: string
@@ -20,7 +21,10 @@ class CreateUserService {
     private usersRepository: IUserRepository,
 
     @inject('HashProvider')
-    private hashProvider: IHashProvider
+    private hashProvider: IHashProvider,
+
+    @inject('CacheProvider')
+    private CacheProvider: ICacheProvider
   ) { }
 
   async execute({ name, email, password }: ICreateUserRequest): Promise<User> {
@@ -37,6 +41,8 @@ class CreateUserService {
       email,
       password: hashedPassword
     })
+
+    await this.CacheProvider.invalidatePrefix('providers-list')
 
     return user
   }

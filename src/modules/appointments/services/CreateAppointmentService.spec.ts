@@ -1,10 +1,12 @@
 import FakeCreateAppointmentsRepository from '../Repositories/fakes/FakeAppointmentsRepository'
 import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository'
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider'
 import CreateAppointmentService from './CreateAppointmentService'
 import AppError from '@shared/errors/AppError'
 
 let fakeNotificationsRepository: FakeNotificationsRepository
 let fakeAppointmentsRepository: FakeCreateAppointmentsRepository
+let fakeCacheProvider: FakeCacheProvider
 let createAppointment: CreateAppointmentService
 
 describe('CreateAppointmentService', () => {
@@ -13,7 +15,8 @@ describe('CreateAppointmentService', () => {
     fakeNotificationsRepository = new FakeNotificationsRepository()
     createAppointment = new CreateAppointmentService(
       fakeAppointmentsRepository,
-      fakeNotificationsRepository
+      fakeNotificationsRepository,
+      fakeCacheProvider
     )
   })
 

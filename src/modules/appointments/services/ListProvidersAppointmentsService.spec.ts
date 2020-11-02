@@ -1,14 +1,17 @@
 import FakeAppointmentsRepository from '@modules/appointments/Repositories/fakes/FakeAppointmentsRepository'
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider'
 import ListProvidersAppointmentsService from './ListProvidersAppointmentsService'
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository
+let fakeCacheProvider: FakeCacheProvider
 let listProvidersAppointmentsService: ListProvidersAppointmentsService
 
 describe('ListProvidersAppointmentsService', () => {
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository()
     listProvidersAppointmentsService = new ListProvidersAppointmentsService(
-      fakeAppointmentsRepository
+      fakeAppointmentsRepository,
+      fakeCacheProvider
     )
   })
 
