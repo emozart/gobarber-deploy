@@ -30,3 +30,17 @@ jobs:
           key: ${{ secrets.DO_SSH_KEY }}
           source: "., !node_modules"
           target: "app/gobarber-deploy"
+          
+  
+      - name: Run Production Scripts
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DO_SSH_HOST }}
+          username: ${{ secrets.DO_SSH_USER }}
+          port: ${{ secrets.DO_SSH_PORT }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          script: |
+            cd ~/app/gobarber-deploy
+            yarn
+            ./node_modules/.bin/typeorm migration:run
+            pm2 restart gobarber-api
